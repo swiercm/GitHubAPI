@@ -1,3 +1,7 @@
 from github import Github
 
-g = Github("06ed0e2888e2e5f130dc47761a2548c63dc610e0") #access token needed from user
+g = Github("<access token>") #access token for user
+
+print("{}'s repositries: ".format(g.get_user().login))
+for repo in g.get_user().get_repos():
+    print(repo.name)
