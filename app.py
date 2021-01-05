@@ -31,5 +31,17 @@ def create_commits_df(repo, user, api):
     return json_normalize(commit_list)
 
 commits = create_commits_df("GitHubAPI, "swiercm", github_api)
+                           
+commits["date"] =  pd.to_datetime(commits["commit.committer.date"])
+commits["date"] =  pd.to_datetime(commits["date"], utc=True)
+commits["commit_date"] = commits["date"].dt.date
+commits["commit_year"] = commits["date"].dt.year
+commits["commit_hour"] = commits["date"].dt.hour
+                            
+#HOURLY COMMITS
+commits_hour = commits.groupby("commit_hour")[["sha"]].count()
+commits_hour = commits_hour.rename(columns = {"sha": "commit_count"})
 
-commits.info()
+fig = graph_obj.Figure([graph_obj.Bar(x=commits_hour.index, y=commits_hour.commit_count, text=commits_hour.commit_count, textposition="auto")])
+fig.update_layout(title = "Hourly Commits", xaxis_title = "Hour", yaxis_title = "Commits", xaxis_tickmode = "linear")
+fig.show()
