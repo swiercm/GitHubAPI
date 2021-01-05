@@ -62,3 +62,13 @@ commits_year["daily_avg"] = commits_year["commits_count"]/365
 fig = graph_obj.Figure([graph_obj.Scatter(x=commits_year.index, y=commits_year.daily_avg, text=commits_year.daily_avg)])
 fig.update_layout(title = "Average Daily Commits by Year", xaxis_title = "Year", yaxis_title = "Average Commits", xaxis_tickmode = "linear")
 fig.show()
+
+#TOP COMMITTERS
+commits_author = commits.groupby("author.login")[["sha"]].count()
+commits_author = commits_author.rename(columns = {"sha": "commit_count"})
+commits_author = commits_author.sort_values(by="commit_count", ascending=False)
+top_authors = commits_author.head(30)
+
+fig = graph_obj.Figure([graph_obj.Bar(x=top_authors.index, y=top_authors.commit_count)])
+fig.update_layout(title = "Top Committers", xaxis_title = "Author", yaxis_title = "Commits", xaxis_tickmode = "linear",xaxis_tickangle=-40)
+fig.show()
