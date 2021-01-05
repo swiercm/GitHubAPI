@@ -30,7 +30,7 @@ def create_commits_df(repo, user, api):
     commit_list = commits_of_repo_github(repo, user, api)
     return json_normalize(commit_list)
 
-commits = create_commits_df("GitHubAPI, "swiercm", github_api)
+commits = create_commits_df(config.REPO, config.USER, github_api)
                            
 commits["date"] =  pd.to_datetime(commits["commit.committer.date"])
 commits["date"] =  pd.to_datetime(commits["date"], utc=True)
