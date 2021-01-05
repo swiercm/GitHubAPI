@@ -5,6 +5,8 @@ from pandas.io.json import json_normalize
 import pandas as pd
 import numpy as np
 import config
+import chart_studio.plotly as py
+import plotly.graph_objs as graph_obj
 
 github_api = "https://api.github.com"
 gh_session = requests.Session()
