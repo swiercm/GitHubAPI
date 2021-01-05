@@ -45,3 +45,20 @@ commits_hour = commits_hour.rename(columns = {"sha": "commit_count"})
 fig = graph_obj.Figure([graph_obj.Bar(x=commits_hour.index, y=commits_hour.commit_count, text=commits_hour.commit_count, textposition="auto")])
 fig.update_layout(title = "Hourly Commits", xaxis_title = "Hour", yaxis_title = "Commits", xaxis_tickmode = "linear")
 fig.show()
+
+#COMMITS BY DATE
+commits_day = commits.groupby("commit_date")[["sha"]].count()
+commits_day = commits_day.rename(columns = {"sha": "commit_count"})
+
+fig = graph_obj.Figure([graph_obj.Scatter(x=commits_day.index, y=commits_day.commit_count, text=commits_day.commit_count, fill="tozeroy")])
+fig.update_layout(title = "Commits by Date", xaxis_title = "Date", yaxis_title = "Commits ")
+fig.show()
+
+#AVERAGE DAILY COMMITS BY YEAR
+commits_year = commits.groupby("commit_year")[["sha"]].count()
+commits_year = commits_year.rename(columns = {"sha": "commits_count"})
+commits_year["daily_avg"] = commits_year["commits_count"]/365
+
+fig = graph_obj.Figure([graph_obj.Scatter(x=commits_year.index, y=commits_year.daily_avg, text=commits_year.daily_avg)])
+fig.update_layout(title = "Average Daily Commits by Year", xaxis_title = "Year", yaxis_title = "Average Commits", xaxis_tickmode = "linear")
+fig.show()
